@@ -1,0 +1,8 @@
+"use client";
+import Image from "next/image";
+import { Minus, Plus, Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { formatCurrency } from "@/lib/format";
+import { useCartStore } from "@/store/cart.store";
+import type { CartItem } from "@/types";
+export function CartLine({ item }: { item: CartItem }) { const setQuantity = useCartStore((s) => s.setQuantity); const remove = useCartStore((s) => s.removeItem); return <div className="flex gap-3 border-b border-border py-4"><div className="relative size-20 shrink-0 overflow-hidden rounded-md bg-surface-2"><Image fill sizes="80px" className="object-cover" src={item.imageUrl || "/globe.svg"} alt={item.name} /></div><div className="min-w-0 flex-1"><p className="truncate font-medium">{item.name}</p><p className="mt-1 text-sm font-semibold text-accent">{formatCurrency(item.price)}</p><div className="mt-2 flex items-center justify-between"><div className="flex items-center rounded-md border border-border"><Button size="icon-sm" variant="ghost" onClick={() => setQuantity(item.productId, item.quantity - 1)} aria-label={`Decrease ${item.name} quantity`}><Minus /></Button><span className="w-8 text-center text-sm">{item.quantity}</span><Button size="icon-sm" variant="ghost" disabled={item.quantity >= item.stock} onClick={() => setQuantity(item.productId, item.quantity + 1)} aria-label={`Increase ${item.name} quantity`}><Plus /></Button></div><Button size="icon-sm" variant="ghost" onClick={() => remove(item.productId)} aria-label={`Remove ${item.name}`}><Trash2 className="text-danger" /></Button></div></div></div>; }

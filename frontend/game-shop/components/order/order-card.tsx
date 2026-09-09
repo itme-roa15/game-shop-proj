@@ -1,0 +1,6 @@
+import { Package } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
+import { OrderStatusBadge } from "@/components/order/order-status-badge";
+import { formatCurrency, formatDate } from "@/lib/format";
+import type { Order } from "@/types";
+export function OrderCard({ order }: { order: Order }) { return <article className="rounded-lg border border-border bg-surface p-5"><header className="flex flex-wrap items-start justify-between gap-3"><div><p className="heading text-lg font-semibold">Order #{order.id}</p><p className="mt-1 text-xs text-text-secondary">{formatDate(order.createdAt)}</p></div><OrderStatusBadge status={order.status} /></header><Separator className="my-4" /><div className="space-y-3">{order.items.map((item) => <div key={item.productId} className="flex items-center gap-3 text-sm"><span className="grid size-9 place-items-center rounded-md bg-surface-2"><Package className="size-4 text-accent" /></span><span className="min-w-0 flex-1 truncate">{item.productName}</span><span className="text-text-secondary">× {item.quantity}</span><span>{formatCurrency(Number(item.subtotal))}</span></div>)}</div><Separator className="my-4" /><div className="flex justify-between font-semibold"><span>Total</span><span className="text-accent">{formatCurrency(Number(order.total))}</span></div></article>; }

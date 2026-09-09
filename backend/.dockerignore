@@ -1,0 +1,8 @@
+.gradle
+build
+.idea
+*.iml
+.env
+API.md
+HELP.md
+Dockerfile*

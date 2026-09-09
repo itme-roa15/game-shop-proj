@@ -1,0 +1,46 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/space-grotesk";
+@custom-variant dark (&:is(.dark *));
+@theme inline {
+  --color-background: var(--color-bg); --color-foreground: var(--color-text-primary);
+  --color-card: var(--color-surface); --color-card-foreground: var(--color-text-primary);
+  --color-popover: var(--color-surface-2); --color-popover-foreground: var(--color-text-primary);
+  --color-primary: var(--color-accent); --color-primary-foreground: #fff;
+  --color-secondary: var(--color-surface-2); --color-secondary-foreground: var(--color-text-primary);
+  --color-muted: var(--color-surface-2); --color-muted-foreground: var(--color-text-secondary);
+  --color-accent: var(--color-accent); --color-accent-foreground: #fff;
+  --color-destructive: var(--color-danger); --color-border: var(--color-border);
+  --color-input: var(--color-border); --color-ring: var(--color-accent);
+  --color-bg: var(--color-bg); --color-surface: var(--color-surface); --color-surface-2: var(--color-surface-2);
+  --color-text-primary: var(--color-text-primary); --color-text-secondary: var(--color-text-secondary); --color-text-muted: var(--color-text-muted);
+  --color-success: var(--color-success); --color-warning: var(--color-warning); --color-danger: var(--color-danger);
+  --font-sans: var(--font-inter); --font-heading: var(--font-space-grotesk);
+  --radius-sm: 6px; --radius-md: 10px; --radius-lg: 16px;
+}
+:root {
+  --font-inter: "Inter Variable", sans-serif; --font-space-grotesk: "Space Grotesk Variable", sans-serif;
+  --color-bg: #0d0d12; --color-surface: #16161e; --color-surface-2: #1f1f2e; --color-border: #2a2a3d;
+  --color-accent: #6c63ff; --color-accent-dim: #4a44c0; --color-accent-glow: rgba(108,99,255,.2);
+  --color-success: #22c55e; --color-danger: #ef4444; --color-warning: #f59e0b;
+  --color-text-primary: #f0f0f8; --color-text-secondary: #9090a8; --color-text-muted: #5a5a72;
+  --background: var(--color-bg); --foreground: var(--color-text-primary); --card: var(--color-surface); --card-foreground: var(--color-text-primary);
+  --popover: var(--color-surface-2); --popover-foreground: var(--color-text-primary); --primary: var(--color-accent); --primary-foreground: #fff;
+  --secondary: var(--color-surface-2); --secondary-foreground: var(--color-text-primary); --muted: var(--color-surface-2); --muted-foreground: var(--color-text-secondary);
+  --accent: var(--color-accent); --accent-foreground: #fff; --destructive: var(--color-danger); --border: var(--color-border); --input: var(--color-border); --ring: var(--color-accent); --radius: 10px;
+}
+@layer base {
+  * { @apply border-border outline-ring/50; }
+  html { color-scheme: dark; }
+  body { @apply bg-background text-foreground font-sans; }
+  button, a, input, select, textarea { @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background; }
+}
+@layer utilities {
+  .page-shell { @apply mx-auto w-full max-w-7xl px-4 md:px-8 lg:px-12; }
+  .heading { font-family: var(--font-space-grotesk); }
+  .card-glow { box-shadow: 0 4px 24px rgba(0,0,0,.4); transition: border-color 150ms ease, box-shadow 250ms ease, transform 250ms ease; }
+  .card-glow:hover { border-color: var(--color-accent); box-shadow: 0 0 20px var(--color-accent-glow); transform: translateY(-2px); }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; } }

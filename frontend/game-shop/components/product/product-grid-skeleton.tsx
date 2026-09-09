@@ -1,0 +1,2 @@
+import { Skeleton } from "@/components/ui/skeleton";
+export function ProductGridSkeleton() { return <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6 lg:grid-cols-4">{Array.from({ length: 8 }, (_, index) => <div key={index} className="overflow-hidden rounded-lg border border-border bg-surface"><Skeleton className="aspect-4/3 w-full" /><div className="space-y-3 p-4"><Skeleton className="h-5 w-20" /><Skeleton className="h-6 w-full" /><Skeleton className="h-10 w-full" /></div></div>)}</div>; }

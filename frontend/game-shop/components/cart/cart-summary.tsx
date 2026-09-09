@@ -1,0 +1,4 @@
+import { Separator } from "@/components/ui/separator";
+import { formatCurrency } from "@/lib/format";
+import type { CartItem } from "@/types";
+export function CartSummary({ items }: { items: CartItem[] }) { const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0); return <div className="space-y-3 rounded-lg border border-border bg-surface p-5"><div className="flex justify-between text-sm text-text-secondary"><span>Items</span><span>{items.reduce((sum, item) => sum + item.quantity, 0)}</span></div><div className="flex justify-between text-sm text-text-secondary"><span>Shipping</span><span className="text-success">Free</span></div><Separator /><div className="flex justify-between text-lg font-semibold"><span>Subtotal</span><span>{formatCurrency(subtotal)}</span></div><p className="text-xs text-text-muted">Tax is calculated at checkout. This demo does not process payments.</p></div>; }
