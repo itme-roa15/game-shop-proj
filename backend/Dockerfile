@@ -13,11 +13,14 @@ FROM eclipse-temurin:21-jre-alpine AS runtime
 
 WORKDIR /app
 
-RUN addgroup -S gameshop && adduser -S gameshop -G gameshop
+RUN addgroup -S -g 10001 gameshop \
+  && adduser -S -D -H -u 10001 -G gameshop gameshop
 
-COPY --from=builder --chown=gameshop:gameshop /workspace/build/libs/*.jar ./app.jar
+COPY --from=builder --chown=10001:10001 \
+  /workspace/build/libs/*.jar ./app.jar
 
-USER gameshop
+USER 10001:10001
+
 EXPOSE 8080
 
 ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75.0", "-jar", "/app/app.jar"]
