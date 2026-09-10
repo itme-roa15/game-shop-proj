@@ -1,18 +1,19 @@
-FROM oven/bun:1.3.11-alpine AS dependencies
+FROM oven/bun:1.3.14-alpine AS dependencies
 
 WORKDIR /app
 COPY package.json bun.lock ./
 RUN bun install --frozen-lockfile
 
-FROM dependencies AS builder
+FROM node:24-alpine AS builder
 
 WORKDIR /app
+COPY --from=dependencies /app/node_modules ./node_modules
 ARG NEXT_PUBLIC_API_URL=/backend-api
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 ENV NEXT_TELEMETRY_DISABLED=1
 
 COPY . .
-RUN bun run build
+RUN node node_modules/next/dist/bin/next build --webpack
 
 FROM node:24-alpine AS runtime
 
@@ -29,7 +30,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-USER nextjs
+USER 1001:1001
 EXPOSE 3000
 
 CMD ["node", "server.js"]
