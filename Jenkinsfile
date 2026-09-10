@@ -126,7 +126,11 @@ spec:
         stage('Prepare build metadata') {
             steps {
                 script {
-                    env.APP_COMMIT = sh(script: 'git rev-parse --short=12 HEAD', returnStdout: true).trim()
+                    def checkedOutCommit = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
+                    def mainCommit = sh(script: 'git rev-parse refs/remotes/origin/main', returnStdout: true).trim()
+
+                    env.DEPLOY_FROM_MAIN = (checkedOutCommit == mainCommit).toString()
+                    env.APP_COMMIT = checkedOutCommit.substring(0, 12)
                     env.IMAGE_TAG = "${env.BUILD_NUMBER}-${env.APP_COMMIT}"
                 }
             }
@@ -174,7 +178,7 @@ spec:
 
         stage('Checkout GitOps repository') {
             when {
-                branch 'main'
+                environment name: 'DEPLOY_FROM_MAIN', value: 'true'
             }
             steps {
                 dir('gitops') {
@@ -192,7 +196,7 @@ spec:
 
         stage('Validate Helm charts') {
             when {
-                branch 'main'
+                environment name: 'DEPLOY_FROM_MAIN', value: 'true'
             }
             steps {
                 container('helm') {
@@ -209,7 +213,7 @@ spec:
 
         stage('Build and publish images') {
             when {
-                branch 'main'
+                environment name: 'DEPLOY_FROM_MAIN', value: 'true'
             }
             steps {
                 container('buildkit') {
@@ -261,7 +265,7 @@ spec:
 
         stage('Update GitOps values') {
             when {
-                branch 'main'
+                environment name: 'DEPLOY_FROM_MAIN', value: 'true'
             }
             steps {
                 dir('gitops') {
