@@ -71,7 +71,7 @@ spec:
           type: Unconfined
       readinessProbe:
         exec:
-          command: ["buildctl", "--addr", "tcp://127.0.0.1:1234", "debug", "workers"]
+          command: ["buildctl", "debug", "workers"]
         initialDelaySeconds: 5
         periodSeconds: 5
         failureThreshold: 30
@@ -216,7 +216,7 @@ spec:
                                 passwordVariable: 'REGISTRY_PASSWORD'
                             )]) {
                         sh '''
-                            export BUILDKIT_HOST="tcp://127.0.0.1:1234"
+                            export BUILDKIT_HOST="unix:///run/user/1000/buildkit/buildkitd.sock"
                             export DOCKER_CONFIG="/tmp/buildkit-docker-config"
                             mkdir -p "$DOCKER_CONFIG"
                             trap 'rm -rf "$DOCKER_CONFIG"' EXIT
