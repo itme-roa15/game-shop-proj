@@ -143,6 +143,9 @@ spec:
                           echo 'networkTimeout=300000' >> backend/gradle/wrapper/gradle-wrapper.properties
                         fi
 
+                        export GRADLE_USER_HOME="$WORKSPACE/.gradle"
+                        mkdir -p "$GRADLE_USER_HOME"
+
                         cd backend
                         ./gradlew test --no-daemon
                     '''
