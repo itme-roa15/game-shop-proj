@@ -21,9 +21,11 @@ spec:
         requests:
           cpu: "250m"
           memory: "512Mi"
+          ephemeral-storage: "1Gi"
         limits:
           cpu: "2"
           memory: "2Gi"
+          ephemeral-storage: "2Gi"
     - name: frontend-deps
       image: oven/bun:1.3.14-alpine
       command: ["cat"]
@@ -35,9 +37,11 @@ spec:
         requests:
           cpu: "250m"
           memory: "512Mi"
+          ephemeral-storage: "1Gi"
         limits:
           cpu: "2"
           memory: "2Gi"
+          ephemeral-storage: "2Gi"
     - name: frontend-test
       image: node:24-alpine
       command: ["cat"]
@@ -49,9 +53,11 @@ spec:
         requests:
           cpu: "250m"
           memory: "512Mi"
+          ephemeral-storage: "1Gi"
         limits:
           cpu: "2"
           memory: "2Gi"
+          ephemeral-storage: "3Gi"
     - name: helm
       image: alpine/helm:3.17.3
       command: ["cat"]
@@ -59,6 +65,11 @@ spec:
       securityContext:
         runAsUser: 1000
         runAsGroup: 1000
+      resources:
+        requests:
+          ephemeral-storage: "64Mi"
+        limits:
+          ephemeral-storage: "256Mi"
     - name: buildkit
       image: moby/buildkit:v0.33.0-rootless
       args: ["--oci-worker-no-process-sandbox"]
@@ -79,7 +90,7 @@ spec:
         requests:
           cpu: "500m"
           memory: "512Mi"
-          ephemeral-storage: "2Gi"
+          ephemeral-storage: "6Gi"
         limits:
           cpu: "4"
           memory: "8Gi"
@@ -94,10 +105,18 @@ spec:
       securityContext:
         runAsUser: 1000
         runAsGroup: 1000
+      resources:
+        requests:
+          ephemeral-storage: "64Mi"
+        limits:
+          ephemeral-storage: "256Mi"
   volumes:
     - name: buildkit-storage
       emptyDir:
         sizeLimit: 20Gi
+    - name: workspace-volume
+      emptyDir:
+        sizeLimit: 4Gi
 '''
         }
     }
@@ -311,9 +330,4 @@ spec:
         }
     }
 
-    post {
-        always {
-            deleteDir()
-        }
-    }
 }
